@@ -1,26 +1,24 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const PORT = 3000;
 
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-// Middleware
+// middleware
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
-// Routes
+// routes
 app.use("/api/users", userRoutes);
 
-// Default route
+// health check
 app.get("/", (req, res) => {
   res.json({ message: "Bank System API is running 🚀" });
 });
 
-// Server
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+// start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`✅ Server: http://localhost:${PORT}`));
