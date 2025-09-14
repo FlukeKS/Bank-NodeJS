@@ -1,24 +1,18 @@
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
+const svc = require('../services/accountService'); 
+const service = require('../services/accountService');
 
-const userRoutes = require("./routes/userRoutes");
 
-const app = express();
+async function list(req, res, next) { try { res.json(await svc.listAccounts(req.user.id)); } catch (e) { next(e); } }
+async function create(req, res, next) { try { res.status(201).json(await svc.createAccount(req.user.id, req.body)); } catch (e) { next(e); } }
+async function get(req, res, next) { try { res.json(await svc.getAccountOrThrow(req.user.id, req.params.id)); } catch (e) { next(e); } }
+async function update(req, res, next) { try { res.json(await svc.updateAccount(req.user.id, req.params.id, req.body)); } catch (e) { next(e); } }
+async function remove(req, res, next) { try { await svc.deleteAccount(req.user.id, req.params.id); res.status(204).end(); } catch (e) { next(e); } }
+async function freeze(req, res, next) { try { res.json(await svc.setStatus(req.user.id, req.params.id, req.body.status)); } catch (e) { next(e); } }
+exports.create = async (req, res, next) => {
+  try {
+    const acc = await service.createAccount(req.user.id, req.body); // ✅
+    res.status(201).json(acc);
+  } catch (err) { next(err); }
+};
 
-// middleware
-app.use(cors());
-app.use(morgan("dev"));
-app.use(express.json());
-
-// routes
-app.use("/api/users", userRoutes);
-
-// health check
-app.get("/", (req, res) => {
-  res.json({ message: "Bank System API is running 🚀" });
-});
-
-// start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`✅ Server: http://localhost:${PORT}`));
+module.exports = { list, create, get, update, remove, freeze };
