@@ -1,26 +1,19 @@
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-const PORT = 3000;
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
 
-const userRoutes = require("./routes/userRoutes");
+const routes = require('./src/routes'); // ✅ ต้องชี้มาที่ src/routes/index.js
+const { notFound, errorHandler } = require('./src/middlewares/error');
 
 const app = express();
-
-// Middleware
 app.use(cors());
-app.use(morgan("dev"));
 app.use(express.json());
+app.use(morgan('dev'));
 
-// Routes
-app.use("/api/users", userRoutes);
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
+app.use('/api', routes); 
 
-// Default route
-app.get("/", (req, res) => {
-  res.json({ message: "Bank System API is running 🚀" });
-});
+app.use(notFound);
+app.use(errorHandler);
 
-// Server
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+module.exports = app;

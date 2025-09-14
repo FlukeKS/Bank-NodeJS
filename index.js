@@ -1,11 +1,15 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+require('dotenv').config();
+const app = require('./app');
+const { sequelize } = require('./src/models');
 
-app.get('/', (req, res) => {
-  res.send('Welcome to the Bank API');
-});
+const PORT = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+(async () => {
+  try {
+    await sequelize.sync(); // ถ้าต้องการล้างตารางตอน dev ใช้ { force: true }
+    app.listen(PORT, () => console.log(`Server running http://localhost:${PORT}`));
+  } catch (err) {
+    console.error('DB init error:', err);
+    process.exit(1);
+  }
+})();
