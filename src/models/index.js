@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 const path = require('path');
 
 const sequelize = new Sequelize({
@@ -7,9 +7,10 @@ const sequelize = new Sequelize({
   logging: false,
 });
 
-const User = require('./user')(sequelize);
-const Account = require('./account')(sequelize);
-const Transaction = require('./transaction')(sequelize);
+// แก้ไขตรงนี้: ต้องส่งทั้ง sequelize และ DataTypes เข้าไป
+const User = require('./user')(sequelize, DataTypes);
+const Account = require('./account')(sequelize, DataTypes);
+const Transaction = require('./transaction')(sequelize, DataTypes);
 
 // Relations
 User.hasMany(Account, { foreignKey: 'userId', as: 'accounts' });

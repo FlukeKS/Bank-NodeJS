@@ -1,20 +1,41 @@
-const svc = require('../services/transactionService'); 
+const transactionService = require('../services/transactionService');
 
-async function list(req, res, next) {
-  try { res.json(await svc.listTxns(req.user.id, req.query)); }
-  catch (e) { next(e); }
-}
-async function create(req, res, next) {
-  try { res.status(201).json(await svc.createTxn(req.user.id, req.body)); }
-  catch (e) { next(e); }
-}
-async function update(req, res, next) {
-  try { res.json(await svc.updateTxn(req.user.id, req.params.id, req.body)); }
-  catch (e) { next(e); }
-}
-async function remove(req, res, next) {
-  try { await svc.deleteTxn(req.user.id, req.params.id); res.status(204).end(); }
-  catch (e) { next(e); }
-}
+const transactionController = {};
 
-module.exports = { list, create, update, remove };
+transactionController.listTxns = async (req, res, next) => {
+  try {
+    const transactions = await transactionService.listTxns(req.user.id, req.query);
+    res.json(transactions);
+  } catch (err) {
+    next(err);
+  }
+};
+
+transactionController.createTxn = async (req, res, next) => {
+  try {
+    const result = await transactionService.createTxn(req.user.id, req.body);
+    res.status(201).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+transactionController.updateTxn = async (req, res, next) => {
+  try {
+    const result = await transactionService.updateTxn(req.user.id, req.params.id, req.body);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+transactionController.deleteTxn = async (req, res, next) => {
+  try {
+    const result = await transactionService.deleteTxn(req.user.id, req.params.id);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = transactionController;

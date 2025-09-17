@@ -1,14 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const ctrl = require('../controllers/transactionController');
-const { auth } = require('../middlewares/auth');
 const { validateBody } = require('../middlewares/validate');
+const auth = require('../middlewares/auth'); // แก้ไข: import โดยตรง
 const { createTxnSchema, updateTxnSchema } = require('../validators/transactionValidators');
 
+// ใช้ middleware สำหรับการตรวจสอบสิทธิ์
 router.use(auth);
-router.get('/', ctrl.list);
-router.post('/', validateBody(createTxnSchema), ctrl.create);
-router.put('/:id', validateBody(updateTxnSchema), ctrl.update);
-router.delete('/:id', ctrl.remove);
+
+// เส้นทางสำหรับ Transactions
+router.get('/', ctrl.listTxns);
+router.post('/', validateBody(createTxnSchema), ctrl.createTxn);
+router.put('/:id', validateBody(updateTxnSchema), ctrl.updateTxn);
+router.delete('/:id', ctrl.deleteTxn);
 
 module.exports = router;

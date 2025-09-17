@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ctrl = require('../controllers/accountController');
-const { auth } = require('../middlewares/auth');
+const auth = require('../middlewares/auth');
 const { validateBody } = require('../middlewares/validate');
 const { createAccountSchema, updateAccountSchema, freezeSchema } = require('../validators/accountValidators');
 
