@@ -1,7 +1,5 @@
 # Bank-NodeJS
 
-Step 7 — ทดสอบเร็ว ๆ (ครบ GET/POST/PUT/DELETE)
-
 สมัคร + ล็อกอิน
 POST /api/auth/register { "name":"Troy", "email":"troy@test.com", "password":"123456" }
 POST /api/auth/login รับ token
