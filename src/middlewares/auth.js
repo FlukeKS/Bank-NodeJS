@@ -1,19 +1,16 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).send({ message: 'Authorization header is missing or malformed' });
-  }
-
-  const token = authHeader.split(' ')[1];
-
+function auth(req, res, next) {
+  const h = req.headers.authorization;
+  if (!h) return res.status(401).json({ message: 'Missing Authorization header' });
+  const token = h.split(' ')[1];
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.user = user;
+    const payload = jwt.verify(token, process.env.JWT_SECRET || 'devsecret');
+    req.user = payload; // { id, email, role }
     next();
-  } catch (err) {
-    res.status(401).send({ message: 'Invalid or expired token' });
+  } catch (e) {
+    return res.status(401).json({ message: 'Invalid token' });
   }
-};
+}
+
+module.exports = { auth };
