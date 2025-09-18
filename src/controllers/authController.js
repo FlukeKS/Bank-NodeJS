@@ -1,21 +1,20 @@
-const userService = require('../services/userService'); 
-
-async function register(req, res, next) {
+exports.register = async (req, res, next) => {
   try {
-    const user = await userService.createUser(req.body);
-    const token = userService.generateToken(user);
-    res.status(201).json({ user: { id: user.id, name: user.name, email: user.email }, token });
-  } catch (e) { next(e); }
-}
+    res.status(201).json({ id: user.id, email: user.email, token });
+  } catch (err) { next(err); }
+};
 
-async function login(req, res, next) {
+exports.login = async (req, res, next) => {
   try {
-    const user = await userService.verifyCredentials(req.body);
-    const token = userService.generateToken(user);
-    res.json({ user: { id: user.id, name: user.name, email: user.email }, token });
-  } catch (e) { next(e); }
-}
+    res.json({ user: { id: user.id, email: user.email }, token });
+  } catch (err) { next(err); }
+};
 
-async function me(req, res) { res.json({ user: req.user }); }
+exports.logout = async (req, res, next) => {
+  try { res.json({ message: 'Logged out successfully' }); }
+  catch (err) { next(err); }
+};
 
-module.exports = { register, login, me };
+exports.me = async (req, res) => {
+  res.json({ id: req.user.id, email: req.user.email, name: req.user.name });
+};
