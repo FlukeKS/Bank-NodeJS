@@ -10,7 +10,7 @@ async function remove(req, res, next) { try { await svc.deleteAccount(req.user.i
 async function freeze(req, res, next) { try { res.json(await svc.setStatus(req.user.id, req.params.id, req.body.status)); } catch (e) { next(e); } }
 exports.create = async (req, res, next) => {
   try {
-    const acc = await service.createAccount(req.user.id, req.body); // ✅
+    const acc = await service.createAccount(req.user.id, req.body);
     res.status(201).json(acc);
   } catch (err) { next(err); }
 };

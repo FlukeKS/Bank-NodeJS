@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// ✅ ตอบเมื่อเรียก GET /api
+// ตอบเมื่อเรียก GET /api
 router.get('/', (req, res) => {
   res.json({ api: 'ok' });
 });

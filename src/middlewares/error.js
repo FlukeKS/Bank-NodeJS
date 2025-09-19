@@ -4,7 +4,7 @@ function notFound(req, res, next) {
   e.status = 404;
   next(e);
 }
-function errorHandler(err, req, res, next) { // eslint-disable-line
+function errorHandler(err, req, res, next) {
   // Sequelize validation => 400
   if (err.name === 'SequelizeValidationError') {
     return res.status(400).json({

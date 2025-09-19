@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 
-const routes = require('./src/routes'); // ✅ ต้องชี้มาที่ src/routes/index.js
+const routes = require('./src/routes');
 const { notFound, errorHandler } = require('./src/middlewares/error');
 
 const app = express();
