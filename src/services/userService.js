@@ -20,7 +20,7 @@ async function verifyCredentials({ email, password }) {
 
 function generateToken(user) {
   return jwt.sign({ id: user.id, email: user.email, role: user.role },
-    process.env.JWT_SECRET || 'devsecret', { expiresIn: '7d' });
+    process.env.JWT_SECRET || 'devsecret', { expiresIn: '1h' });
 }
 
 async function createAccount(userId, payload) {
