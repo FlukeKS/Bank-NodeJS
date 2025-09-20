@@ -22,14 +22,13 @@ async function listTxns(userId, query = {}) {
 async function getTxnOrThrow(userId, id) {
   const txn = await Transaction.findByPk(id);
   if (!txn) { const e = new Error('Transaction not found'); e.status = 404; throw e; }
-  // ปกป้องสิทธิ์ผ่าน account.owner
+  
   const acc = await Account.findByPk(txn.accountId);
   if (!acc || acc.userId !== userId) { const e = new Error('Forbidden'); e.status = 403; throw e; }
   return txn;
 }
 
 async function updateTxn(userId, id, payload) {
-  // เพื่อความง่าย อนุญาตแก้เฉพาะ note/occurredAt (ไม่แก้ amount/type)
   const txn = await getTxnOrThrow(userId, id);
   await txn.update(payload);
   return txn;
