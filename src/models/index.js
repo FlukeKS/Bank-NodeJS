@@ -11,7 +11,6 @@ const User = require('./user')(sequelize);
 const Account = require('./account')(sequelize);
 const Transaction = require('./transaction')(sequelize);
 
-// Relations
 User.hasMany(Account, { foreignKey: 'userId', as: 'accounts' });
 Account.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
